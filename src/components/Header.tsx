@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Leaf, History, Map } from 'lucide-react';
+import { Leaf, History, Map, LogOut } from 'lucide-react';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -12,7 +12,13 @@ const Header = () => {
     useEffect(() => {
         const userId = localStorage.getItem('user_id');
         setIsAuthenticated(!!userId);
-    }, [location]); // kiểm tra mỗi khi location (route) thay đổi
+    }, [location]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('user_id');
+        setIsAuthenticated(false);
+        navigate('/');
+    };
 
     const handleScrollToSection = useCallback((e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
         e.preventDefault();
@@ -64,16 +70,16 @@ const Header = () => {
                             </a>
                         </li>
                         {isAuthenticated && (
-                                    <li>
-                                        <button
-                                            onClick={() => navigate('/history')}
-                                            className="flex items-center text-white hover:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200"
-                                        >
-                                            <History className="h-4 w-4 mr-1" />
-                                            History
-                                        </button>
-                                    </li>
-                                )}  
+                            <li>
+                                <button
+                                    onClick={() => navigate('/history')}
+                                    className="flex items-center text-white hover:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200"
+                                >
+                                    <History className="h-4 w-4 mr-1" />
+                                    History
+                                </button>
+                            </li>
+                        )}  
                         <li>
                             <button
                                 onClick={() => navigate('/disease-map')}
@@ -85,7 +91,7 @@ const Header = () => {
                         </li>
                     </ul>
 
-                    {!isAuthenticated && (
+                    {!isAuthenticated ? (
                         <div className="flex items-center space-x-2">
                             <button
                                 onClick={() => navigate('/login')}
@@ -100,6 +106,14 @@ const Header = () => {
                                 Sign up
                             </button>
                         </div>
+                    ) : (
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center px-4 py-2 text-white hover:text-red-200 transition duration-200"
+                        >
+                            <LogOut className="h-4 w-4 mr-2" />
+                            Logout
+                        </button>
                     )}
                 </nav>
             </div>

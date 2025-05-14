@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail } from 'lucide-react';
+import { Lock, Phone } from 'lucide-react';
+import axios from 'axios';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement login logic
-    console.log('Login:', { email, password });
+    console.log('Login:', { phone, password });
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/auth/login', {
+        phone: phone,
+        password: password,
+      });
+      if (response.status === 200) {
+        alert('Login successful');
+     
+        
+        localStorage.setItem('user_id', response.data.user.user_id);
+        navigate('/'); //Navigate to home page
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('Login failed. Please check your credentials and try again.');
+    }
   };
 
   return (
@@ -33,22 +49,22 @@ const LoginForm = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
+                Phone Number
               </label>
               <div className="mt-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Phone className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  autoComplete="tel"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   className="appearance-none block w-full pl-10 px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500"
-                  placeholder="Enter your email"
+                  placeholder="Enter your phone number"
                 />
               </div>
             </div>

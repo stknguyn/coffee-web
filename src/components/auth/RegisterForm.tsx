@@ -12,12 +12,13 @@ const RegisterForm = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+      console.log('Form submitted:', { name, phone, password, confirmPassword });
       if (password !== confirmPassword) {
         alert('Passwords do not match');
         return;
       }
       try {
-        const response = await axios.post('http://localhost:8000/auth/register', {
+        const response = await axios.post('http://127.0.0.1:8000/auth/register', {
           username: name,
           phone: phone,
           password: password,

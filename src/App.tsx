@@ -26,7 +26,13 @@ function App() {
         setIsProcessing(true);
         console.log("Selected file:", selectedImage);
         try {
-            const userId = "6744027b41c77d5a872ca467";
+             const userId = localStorage.getItem("user_id");
+        console.log("User ID:", userId);
+        if (!userId) {
+            alert("Please log in to continue.");
+            setIsProcessing(false);
+            return;
+        }
 
             const getCroods = (): Promise<string> =>
                 new Promise((resolve) => {

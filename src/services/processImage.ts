@@ -8,6 +8,7 @@ export const processImage = (
     croods: string,
     originalImageUrl: string
 ): Promise<ProcessedResult> => {
+    console.log("id", userId);
     const formData = new FormData();
     formData.append('file', file);
     formData.append('user_id', userId);

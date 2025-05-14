@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ImageUpload from './components/ImageUpload';
@@ -6,14 +7,18 @@ import ImageResult from './components/ImageResult';
 import ProcessingIndicator from './components/ProcessingIndicator';
 import AboutSection from './components/AboutSection';
 import GuideSection from './components/GuideSection';
+import LoginForm from './components/auth/LoginForm';
+import RegisterForm from './components/auth/RegisterForm';
+import HistoryPage from './components/history/HistoryPage';
+import DiseaseMap from './components/DiseaseMap';
 import { ProcessedResult } from './types';
 import { processImage } from './services/processImage';
 import { ArrowDownCircle } from 'lucide-react';
 
 function App() {
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
-    const [isProcessing, setIsProcessing] = useState<boolean>(false);
-    const [result, setResult] = useState<ProcessedResult | null>(null);
+    const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
+    const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
+    const [result, setResult] = React.useState<ProcessedResult | null>(null);
 
     const handleImageSelected = async (file: File, preview: string) => {
         setSelectedImage(preview);
@@ -23,7 +28,6 @@ function App() {
         try {
             const userId = "6744027b41c77d5a872ca467";
 
-            // Lấy vị trí người dùng (nếu không được thì fallback mặc định)
             const getCroods = (): Promise<string> =>
                 new Promise((resolve) => {
                     navigator.geolocation.getCurrentPosition(
@@ -33,7 +37,6 @@ function App() {
                             resolve(`${lat},${long}`);
                         },
                         () => {
-                            // Nếu lỗi thì trả về toạ độ mặc định (TP.HCM)
                             resolve("10.762622,106.660172");
                         }
                     );
@@ -42,7 +45,7 @@ function App() {
             const croods = await getCroods();
             const response = await processImage(file, userId, croods, preview);
             console.log("Processed result:", response);
-            setResult(response); // Đã chuẩn kiểu ProcessedResult
+            setResult(response);
         } catch (error) {
             console.error('Error processing image:', error);
         } finally {
@@ -50,12 +53,9 @@ function App() {
         }
     };
 
-    return (
-        <div className="min-h-screen flex flex-col bg-gray-50">
-            <Header />
-
+    const HomePage = () => (
+        <>
             <main className="flex-grow">
-                {/* Hero Section */}
                 <section className="relative bg-gradient-to-r from-green-900 to-green-700 text-white py-16 overflow-hidden">
                     <div className="absolute inset-0 opacity-10" style={{
                         backgroundImage: "url('https://images.pexels.com/photos/2112189/pexels-photo-2112189.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260')",
@@ -100,7 +100,6 @@ function App() {
                     </div>
                 </section>
 
-                {/* Upload Section */}
                 <section id="upload" className="py-12">
                     <div className="container mx-auto px-4">
                         <div className="text-center mb-8">
@@ -121,7 +120,7 @@ function App() {
                                 <div className="mt-8">
                                     <ImageResult result={result} />
                                 </div>
-                            )}  
+                            )}
                         </div>
                     </div>
                 </section>
@@ -129,10 +128,24 @@ function App() {
                 <AboutSection />
                 <GuideSection />
             </main>
-
-            <Footer />
             <ProcessingIndicator isProcessing={isProcessing} />
-        </div>
+        </>
+    );
+
+    return (
+        <Router>
+            <div className="min-h-screen flex flex-col bg-gray-50">
+                <Header />
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<LoginForm />} />
+                    <Route path="/register" element={<RegisterForm />} />
+                    <Route path="/history" element={<HistoryPage />} />
+                    <Route path="/disease-map" element={<DiseaseMap />} />
+                </Routes>
+                <Footer />
+            </div>
+        </Router>
     );
 }
 

@@ -12,4 +12,5 @@ export interface ProcessedResult {
   detections: DiseaseDetection[];
   processingTime: number;
   timestamp: string;
+  location?: string;
 }

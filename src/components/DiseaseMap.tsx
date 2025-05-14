@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { ProcessedResult } from '../types';
-import L from 'leaflet';
 
-// Fix for default marker icons in react-leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
+const mapContainerStyle = {
+    width: '100%',
+    height: '600px'
+};
+
+const center = {
+    lat: 10.762622,
+    lng: 106.660172
+};
 
 // Mock data - replace with actual API call
 const mockData: ProcessedResult[] = [
@@ -47,6 +47,7 @@ const mockData: ProcessedResult[] = [
 const DiseaseMap: React.FC = () => {
     const [detections, setDetections] = useState<ProcessedResult[]>(mockData);
     const [statistics, setStatistics] = useState<{ [key: string]: number }>({});
+    const [selectedMarker, setSelectedMarker] = useState<ProcessedResult | null>(null);
 
     useEffect(() => {
         // Calculate disease statistics
@@ -58,6 +59,36 @@ const DiseaseMap: React.FC = () => {
         }, {} as { [key: string]: number });
         setStatistics(stats);
     }, [detections]);
+
+    const mapOptions = {
+        styles: [
+            {
+                featureType: "administrative",
+                elementType: "geometry",
+                stylers: [{ visibility: "simplified" }]
+            },
+            {
+                featureType: "landscape",
+                elementType: "all",
+                stylers: [{ color: "#f2f2f2" }]
+            },
+            {
+                featureType: "poi",
+                elementType: "all",
+                stylers: [{ visibility: "off" }]
+            },
+            {
+                featureType: "water",
+                elementType: "all",
+                stylers: [{ color: "#c3d1d9" }]
+            }
+        ],
+        disableDefaultUI: false,
+        zoomControl: true,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: true
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -80,37 +111,57 @@ const DiseaseMap: React.FC = () => {
 
                     {/* Map Container */}
                     <div className="h-[600px] rounded-lg overflow-hidden border border-gray-200">
-                        <MapContainer
-                            center={[10.762622, 106.660172]}
-                            zoom={12}
-                            style={{ height: '100%', width: '100%' }}
-                        >
-                            <TileLayer
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            />
-                            {detections.map((detection, index) => {
-                                if (!detection.location) return null;
-                                const [lat, lng] = detection.location.split(',').map(Number);
-                                return (
-                                    <Marker key={index} position={[lat, lng]}>
-                                        <Popup>
-                                            <div className="p-2">
-                                                <h3 className="font-semibold text-sm">
-                                                    {detection.detections[0].name}
-                                                </h3>
-                                                <p className="text-xs text-gray-600">
-                                                    Confidence: {(detection.detections[0].confidence * 100).toFixed(1)}%
-                                                </p>
-                                                <p className="text-xs text-gray-600">
-                                                    {new Date(detection.timestamp).toLocaleDateString()}
-                                                </p>
-                                            </div>
-                                        </Popup>
-                                    </Marker>
-                                );
-                            })}
-                        </MapContainer>
+                        <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
+                            <GoogleMap
+                                mapContainerStyle={mapContainerStyle}
+                                center={center}
+                                zoom={12}
+                                options={mapOptions}
+                            >
+                                {detections.map((detection, index) => {
+                                    if (!detection.location) return null;
+                                    const [lat, lng] = detection.location.split(',').map(Number);
+                                    return (
+                                        <Marker
+                                            key={index}
+                                            position={{ lat, lng }}
+                                            onClick={() => setSelectedMarker(detection)}
+                                            icon={{
+                                                url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                                                scaledSize: new window.google.maps.Size(32, 32)
+                                            }}
+                                        />
+                                    );
+                                })}
+
+                                {selectedMarker && selectedMarker.location && (
+                                    <InfoWindow
+                                        position={{
+                                            lat: Number(selectedMarker.location.split(',')[0]),
+                                            lng: Number(selectedMarker.location.split(',')[1])
+                                        }}
+                                        onCloseClick={() => setSelectedMarker(null)}
+                                    >
+                                        <div className="p-2 max-w-xs">
+                                            <h3 className="font-semibold text-sm mb-1">
+                                                {selectedMarker.detections[0].name}
+                                            </h3>
+                                            <p className="text-xs text-gray-600 mb-1">
+                                                Confidence: {(selectedMarker.detections[0].confidence * 100).toFixed(1)}%
+                                            </p>
+                                            <p className="text-xs text-gray-600">
+                                                {new Date(selectedMarker.timestamp).toLocaleDateString()}
+                                            </p>
+                                            <img
+                                                src={selectedMarker.processedImage}
+                                                alt="Detected leaf"
+                                                className="mt-2 w-full h-32 object-cover rounded"
+                                            />
+                                        </div>
+                                    </InfoWindow>
+                                )}
+                            </GoogleMap>
+                        </LoadScript>
                     </div>
                 </div>
             </div>

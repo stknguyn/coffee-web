@@ -26,13 +26,13 @@ function App() {
         setIsProcessing(true);
         console.log("Selected file:", selectedImage);
         try {
-             const userId = localStorage.getItem("user_id");
-        console.log("User ID:", userId);
-        if (!userId) {
-            alert("Please log in to continue.");
-            setIsProcessing(false);
-            return;
-        }
+            const userId = localStorage.getItem("user_id");
+            console.log("User ID:", userId);
+            if (!userId) {
+                alert("Please log in to continue.");
+                setIsProcessing(false);
+                return;
+            }
 
             const getCroods = (): Promise<string> =>
                 new Promise((resolve) => {
@@ -64,7 +64,7 @@ function App() {
             <main className="flex-grow">
                 <section className="relative bg-gradient-to-r from-green-900 to-green-700 text-white py-16 overflow-hidden">
                     <div className="absolute inset-0 opacity-10" style={{
-                        backgroundImage: "url('https://images.pexels.com/photos/2112189/pexels-photo-2112189.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260')",
+                        backgroundImage: "url('https://rocken.vn/wp-content/uploads/2024/05/ca-phe-xanh-lun-2019.jpg')",
                         backgroundSize: 'cover',
                         backgroundPosition: 'center'
                     }}></div>
@@ -73,30 +73,30 @@ function App() {
                         <div className="flex flex-col md:flex-row items-center justify-between">
                             <div className="md:w-1/2 mb-8 md:mb-0">
                                 <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-                                    AI-Powered Coffee Leaf Disease Detection
+                                    Phát hiện bệnh trên lá cà phê sử dụng công nghệ AI
                                 </h1>
                                 <p className="text-xl mb-6 text-green-100">
-                                    Upload an image of a coffee plant leaf and get instant disease identification with treatment recommendations.
+                                    Tải lên hình ảnh lá cây cà phê để nhận diện bệnh ngay lập tức.
                                 </p>
                                 <div className="flex space-x-4">
                                     <a
                                         href="#upload"
                                         className="bg-white text-green-800 px-6 py-3 rounded-md font-semibold hover:bg-green-100 transition duration-200 inline-flex items-center"
                                     >
-                                        Get Started
+                                        Bắt Đầu
                                         <ArrowDownCircle className="ml-2 h-5 w-5" />
                                     </a>
                                     <a
                                         href="#guide"
                                         className="border border-white text-white px-6 py-3 rounded-md font-semibold hover:bg-white hover:bg-opacity-10 transition duration-200"
                                     >
-                                        Learn More
+                                        Tìm Hiểu Thêm
                                     </a>
                                 </div>
                             </div>
                             <div className="md:w-1/2 flex justify-center">
                                 <img
-                                    src="https://images.pexels.com/photos/1695052/pexels-photo-1695052.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
+                                    src="https://rocken.vn/wp-content/uploads/2024/05/ca-phe-xanh-lun-2019.jpg"
                                     alt="Coffee plantation"
                                     className="rounded-lg shadow-xl max-w-full h-auto"
                                     style={{ maxHeight: '400px' }}
@@ -109,16 +109,16 @@ function App() {
                 <section id="upload" className="py-12">
                     <div className="container mx-auto px-4">
                         <div className="text-center mb-8">
-                            <h2 className="text-3xl font-bold text-gray-800">Detect Diseases in Coffee Leaves</h2>
+                            <h2 className="text-3xl font-bold text-gray-800">Phát Hiện Bệnh Trên Lá Cà Phê</h2>
                             <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
-                                Upload a photo of your coffee plant leaf and our AI will analyze it for diseases,
-                                providing detailed results and treatment recommendations.
+                                Tải lên một bức ảnh của lá cây cà phê của bạn và AI của chúng tôi sẽ phân tích nó để phát hiện bệnh,
+                                cung cấp kết quả chi tiết và các khuyến nghị điều trị.
                             </p>
                         </div>
 
                         <div className="max-w-4xl mx-auto">
                             <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                                <h3 className="text-xl font-semibold text-gray-800 mb-4">Upload Image</h3>
+                                <h3 className="text-xl font-semibold text-gray-800 mb-4">Tải ảnh lên</h3>
                                 <ImageUpload onImageSelected={handleImageSelected} />
                             </div>
 

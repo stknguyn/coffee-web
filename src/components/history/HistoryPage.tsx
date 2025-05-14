@@ -49,19 +49,19 @@ const HistoryPage: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="p-8 text-center text-gray-500">Loading history...</div>;
+    return <div className="p-8 text-center text-gray-500">Đang tải...</div>;
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center mb-8">
         <History className="h-8 w-8 text-green-700 mr-3" />
-        <h1 className="text-3xl font-bold text-gray-800">Detection History</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Lịch sử chẩn đoán</h1>
       </div>
 
       <div className="grid gap-6 ">
         {history.length === 0 ? (
-          <div className="text-gray-500 text-center">No history available.</div>
+          <div className="text-gray-500 text-center">Knông có lịch sử.</div>
         ) : (
           history.map((item) => (
             <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -89,10 +89,10 @@ const HistoryPage: React.FC = () => {
 
                 <div className="bg-gray-50 p-4 rounded-md border-l-4 border-green-700">
                   <h2 className="font-bold text-lg text-gray-800 mb-1">
-                    Result: {labelMap[item.result] ?? 'Unknown'}
+                    Kết quả: {labelMap[item.result] ?? 'Unknown'}
                   </h2>
                   <p className="text-sm text-gray-600 mb-2">
-                    Confidence:{' '}
+                    Độ tin cậy:{' '}
                     <span
                       className={`font-semibold ${
                         item.confidence > 0.8

@@ -85,14 +85,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelected }) => {
                             <Upload className="h-8 w-8 text-green-600" />
                         </div>
                         <div>
-                            <p className="text-lg font-medium text-gray-700">Drop your image here</p>
-                            <p className="text-sm text-gray-500 mt-1">PNG, JPG or JPEG (max. 5MB)</p>
+                            <p className="text-lg font-medium text-gray-700">Tải ảnh lên ở đây</p>
+                            <p className="text-sm text-gray-500 mt-1">PNG, JPG hoặc JPEG (tối đa 5MB)</p>
                         </div>
                         <button
                             onClick={handleBrowseClick}
                             className="px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-800 transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                         >
-                            Select Image
+                            Chọn Hình Ảnh
                         </button>
                     </div>
                     <input

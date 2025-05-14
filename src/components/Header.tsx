@@ -42,7 +42,7 @@ const Header = () => {
                                 onClick={() => navigate('/')}
                                 className="text-white hover:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200"
                             >
-                                Home
+                                Trang chủ
                             </button>
                         </li>
                         <li>
@@ -51,7 +51,7 @@ const Header = () => {
                                 className="text-white hover:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200"
                                 onClick={(e) => handleScrollToSection(e, '#about')}
                             >
-                                About
+                                Giới thiệu
                             </a>
                         </li>
                         <li>
@@ -60,7 +60,7 @@ const Header = () => {
                                 className="text-white hover:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200"
                                 onClick={(e) => handleScrollToSection(e, '#guide')}
                             >
-                                Guide
+                                Hướng dẫn
                             </a>
                         </li>
                         {isAuthenticated && (
@@ -70,7 +70,7 @@ const Header = () => {
                                             className="flex items-center text-white hover:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200"
                                         >
                                             <History className="h-4 w-4 mr-1" />
-                                            History
+                                            Lịch sử tra cứu
                                         </button>
                                     </li>
                                 )}  
@@ -80,7 +80,7 @@ const Header = () => {
                                 className="flex items-center text-white hover:text-green-200 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200"
                             >
                                 <Map className="h-4 w-4 mr-1" />
-                                Disease Map
+                                Bản đồ kiếm soát
                             </button>
                         </li>
                     </ul>
@@ -91,13 +91,13 @@ const Header = () => {
                                 onClick={() => navigate('/login')}
                                 className="px-4 py-2 text-white hover:text-green-200 transition duration-200"
                             >
-                                Sign in
+                                Đăng nhập
                             </button>
                             <button
                                 onClick={() => navigate('/register')}
                                 className="px-4 py-2 bg-white text-green-800 rounded-md hover:bg-green-100 transition duration-200"
                             >
-                                Sign up
+                                Đăng ký
                             </button>
                         </div>
                     )}

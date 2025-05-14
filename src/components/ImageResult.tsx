@@ -19,15 +19,15 @@ const ImageResult: React.FC<ImageResultProps> = ({ result }) => {
     return (
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="p-4 bg-green-800 text-white">
-                <h3 className="text-lg font-semibold">Analysis Results</h3>
+                <h3 className="text-lg font-semibold">Kết quả chẩn đoán</h3>
                 <p className="text-sm text-green-200">
-                    Processed • {new Date(result.timestamp).toLocaleString()}
+                    Đã xử lí • {new Date(result.timestamp).toLocaleString()}
                 </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
                 <div className="space-y-2">
-                    <div className="text-sm font-medium text-gray-500">Original Image</div>
+                    <div className="text-sm font-medium text-gray-500">Hình ảnh gốc</div>
                     <div className="relative group border border-gray-200 rounded-lg overflow-hidden">
                         <img
                             src={result.originalImage}
@@ -53,7 +53,7 @@ const ImageResult: React.FC<ImageResultProps> = ({ result }) => {
                 </div>
 
                 <div className="space-y-2">
-                    <div className="text-sm font-medium text-gray-500">Processed Image</div>
+                    <div className="text-sm font-medium text-gray-500">Hình ảnh sau xử lí</div>
                     <div className="relative group border border-gray-200 rounded-lg overflow-hidden">
                         <img
                             src={result.processedImage}
@@ -80,15 +80,15 @@ const ImageResult: React.FC<ImageResultProps> = ({ result }) => {
             </div>
 
             <div className="p-4 border-t border-gray-200">
-                <h4 className="font-medium text-gray-800 mb-3">Detected Disease</h4>
+                <h4 className="font-medium text-gray-800 mb-3">Phát hiện bệnh</h4>
                 <div className="space-y-3">
                     {result.detections.map((detection) => (
                         <div key={detection.id} className="bg-gray-50 p-3 rounded-md border-l-4 border-green-700">
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <h5 className="font-semibold text-gray-800">{detection.name}</h5>
+                                    <h5 className="font-bold text-lg text-gray-800 capitalize">{detection.name}</h5>
                                     <div className="text-sm text-gray-600 mt-1">
-                                        Confidence:
+                                        Độ tin cậy:
                                         <span
                                             className={`ml-1 font-medium ${detection.confidence > 0.8 ? 'text-green-600' :
                                                 detection.confidence > 0.5 ? 'text-yellow-600' :
@@ -105,12 +105,12 @@ const ImageResult: React.FC<ImageResultProps> = ({ result }) => {
                                             'bg-red-100 text-red-800'
                                         }`}
                                 >
-                                    {detection.confidence > 0.8 ? 'High' : detection.confidence > 0.5 ? 'Medium' : 'Low'} confidence
+                                    {detection.confidence > 0.8 ? 'Cao' : detection.confidence > 0.5 ? 'Trung Bình' : 'Thấp'}
                                 </div>
                             </div>
                             <div className="mt-3 text-sm text-gray-700">{detection.description}</div>
                             <div className="mt-2">
-                                <h6 className="text-sm font-medium text-gray-700">Recommended Treatment:</h6>
+                                <h6 className="text-sm font-medium text-gray-700">Hướng giải pháp đề xuất:</h6>
                                 <p className="text-sm text-gray-700 mt-1">{detection.treatment}</p>
                             </div>
                         </div>
